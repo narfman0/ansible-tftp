@@ -7,7 +7,7 @@ ansible-tftp
 .. image:: https://travis-ci.org/narfman0/ansible-tftp.png?branch=master
     :target: https://travis-ci.org/narfman0/ansible-tftp
 
-Ansible module for tftp project.
+Ansible module for tftp
 
 Usage
 -----
