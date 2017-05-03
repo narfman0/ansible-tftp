@@ -1,0 +1,19 @@
+---
+- name: Install Packages
+  package:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - "{{ tftp_service_package }}"
+
+- name: Enable tftp service
+  service:
+    name: "{{ tftp_service_name }}"
+    enabled: yes
+    state: started
+
+- name: TFTP firewall rule
+  firewalld:
+    port: 69/udp
+    permanent: true
+    state: enabled

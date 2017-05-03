@@ -1,0 +1,3 @@
+---
+tftp_service_name: tftp
+tftp_service_package: tftp-server

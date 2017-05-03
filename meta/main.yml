@@ -1,0 +1,13 @@
+---
+galaxy_info:
+  author: "Jon Robison"
+  description: "Ansible role that installs and configures tftp"
+  license: GPL3
+  min_ansible_version: 1.9
+  platforms:
+    - name: Fedora
+      versions:
+        - all
+  categories:
+    - tftp
+dependencies: []
