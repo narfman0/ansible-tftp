@@ -47,6 +47,7 @@
     port: 69/udp
     permanent: true
     state: enabled
+  when: ansible_distribution == 'Fedora' or ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
 - name: Reconfigure TFTP server (debian/ubuntu)
   command: dpkg-reconfigure --frontend=noninteractive tftpd-hpa
