@@ -3,7 +3,7 @@ sudo: required
 
 env:
   - distro: geerlingguy
-    release: docker-fedora24-ansible
+    release: docker-debian8-ansible
     init: /lib/systemd/systemd
     run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
 

@@ -1,19 +1,53 @@
 ---
-- name: Install Packages
+- name: Install Packages (debian/ubuntu)
+  package:
+    name: tftpd-hpa
+    state: latest
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  register: tftpd_register_install
+
+- name: Install Packages (fedora)
+  package:
+    name: tftp-server
+    state: latest
+  when: ansible_distribution == 'Fedora'
+
+- name: Install Packages (centos/rhel)
   package:
     name: "{{ item }}"
     state: latest
   with_items:
-    - "{{ tftp_service_package }}"
+    - tftp-server
+    - xinetd
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
-- name: Enable tftp service
+- name: Xinetd update
+  lineinfile:
+    path: /etc/xinetd.d/tftp
+    regexp: 'disable\s+= (yes|no)'
+    line: "{{'\t'}}disable = no"
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+- name: Enable tftp service (fedora)
   service:
-    name: "{{ tftp_service_name }}"
+    name: "tftp"
     enabled: yes
     state: started
+  when: ansible_distribution == 'Fedora'
+
+- name: Enable tftp service (centos/rhel)
+  service:
+    name: "xinetd"
+    enabled: yes
+    state: started
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
 - name: TFTP firewall rule
   firewalld:
     port: 69/udp
     permanent: true
     state: enabled
+
+- name: Reconfigure TFTP server (debian/ubuntu)
+  command: dpkg-reconfigure --frontend=noninteractive tftpd-hpa
+  when: tftpd_register_install is defined and tftpd_register_install.changed
